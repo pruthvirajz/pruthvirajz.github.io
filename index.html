@@ -8,6 +8,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<script>
+  (function(){
+    var t=null;
+    try{t=localStorage.getItem("theme")}catch(e){}
+    if(!t){t=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}
+    document.documentElement.setAttribute("data-theme",t);
+  })();
+</script>
 <style>
   :root{
     --cream:#f6f0e4;
@@ -17,6 +25,29 @@
     --accent:#7a2e22;
     --rule:#d8ccb4;
   }
+  [data-theme="dark"]{
+    --cream:#1b1916;
+    --cream-dark:#25221e;
+    --ink:#e9e1d3;
+    --muted:#a99f91;
+    --accent:#e09a84;
+    --rule:#3b362f;
+    color-scheme:dark;
+  }
+  body{transition:background-color .25s ease,color .25s ease}
+  [data-theme="dark"] .banner{filter:brightness(.85)}
+
+  .theme-toggle{
+    margin-left:1.1rem;padding:.25rem;vertical-align:middle;
+    background:none;border:1px solid var(--rule);border-radius:50%;
+    width:2.1rem;height:2.1rem;display:inline-flex;align-items:center;justify-content:center;
+    color:var(--ink);cursor:pointer;
+  }
+  .theme-toggle:hover{color:var(--accent);border-color:var(--accent)}
+  .theme-toggle svg{width:1.1rem;height:1.1rem}
+  .theme-toggle .sun{display:none}
+  [data-theme="dark"] .theme-toggle .sun{display:block}
+  [data-theme="dark"] .theme-toggle .moon{display:none}
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{
@@ -104,6 +135,8 @@
 
   @media (max-width:760px){
     nav a{margin:0 1rem 0 0;font-size:.95rem}
+    header{position:relative}
+    .theme-toggle{position:absolute;top:1.2rem;right:1.2rem;margin:0}
   }
   @media (max-width:640px){
     body{font-size:1.15rem}
@@ -130,6 +163,10 @@
     <a href="#projects">Projects</a>
     <a href="#publications">Publications</a>
     <a href="#contact">Contact</a>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.2M12 19.8V22M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2 12h2.2M19.8 12H22M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></svg>
+    </button>
   </nav>
 </header>
 
@@ -327,6 +364,15 @@
   </section>
 
 </main>
+
+<script>
+  document.getElementById("theme-toggle").addEventListener("click",function(){
+    var root=document.documentElement;
+    var next=root.getAttribute("data-theme")==="dark"?"light":"dark";
+    root.setAttribute("data-theme",next);
+    try{localStorage.setItem("theme",next)}catch(e){}
+  });
+</script>
 
 </body>
 </html>
